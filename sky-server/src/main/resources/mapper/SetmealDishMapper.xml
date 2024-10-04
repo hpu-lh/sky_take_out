@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.mapper.SetmealDishMapper">
+    <select id="selectSetmealIdsByDishIds" parameterType="int" resultType="int">
+        select setmeal_id from setmeal_dish where dish_id in
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insertSetmealDishByList" parameterType="setmealdish">
+        insert into setmeal_dish values
+        <foreach collection="list" item="setmealDish" separator=",">
+            (null,#{setmealDish.setmealId},#{setmealDish.dishId},#{setmealDish.name},#{setmealDish.price},#{setmealDish.copies})
+        </foreach>
+    </insert>
+
+    <delete id="deleteSetmealDishBySetmealIds" parameterType="int">
+        delete from setmeal_dish where setmeal_id in
+        <foreach collection="list" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectSetmealDishListBySetmealId" parameterType="int" resultType="setmealdish">
+        select * from setmeal_dish where setmeal_id=#{id}
+    </select>
+
+</mapper>
